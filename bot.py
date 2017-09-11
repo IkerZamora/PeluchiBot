@@ -1,47 +1,21 @@
 # -*- coding: utf-8 -*-
-#import redis
-import os
-import telebot
 import datetime
+import os
 import sys
-from imp import reload
+import telebot
 
-# This will prevent errors with special characters
-#reload(sys)
-#sys.setdefaultencoding("utf-8")
-
-# Example of your code beginning
-#           Config vars
 token = os.environ['TELEGRAM_TOKEN']
-#some_api_token = os.environ['SOME_API_TOKEN']
-#             ...
-
-# If you use redis, install this add-on https://elements.heroku.com/addons/heroku-redis
-#r = redis.from_url(os.environ.get("REDIS_URL"))
-
-#       Your bot code below
-# bot = telebot.TeleBot(token)
-# some_api = some_api_lib.connect(some_api_token)
-#              ...
 
 bot = telebot.TeleBot(token)
 
 commands = {
-    # command description used in the 'ayuda' command, keep these up to date
-    'apastar': 'Manda a alguien a pastar',
+# command description used in the 'ayuda' command, keep these up to date
     'ayuda': 'Obtener información acerca de los comandos',
-    'ayylmao': 'ayyy lmao',
-    'ban': 'Ban hammer!',
-    'drama': 'Drama :O',
-    'fichas': 'Fichas, fichas!',
-    'hype': 'Tiempo restante para la próxima EE ó AE ó GE',
-    'kappa': 'Kappa',
-    'lag': 'Lag, lag everywhere',
-    'rip': 'RIP',
-    'spam': 'Spam',
-    'thug': 'Thug life'
+    'fotopizza': 'Fotopizza de los pizzeros (Próximamente)',
+    'hype': 'Tiempo restante para la próxima EE ó AE ó GE ó Gamergy (Próximamente)'
 }
 
+# Help command. Returns all the commands with their help text
 @bot.message_handler(commands=['ayuda'])
 def command_help(m):
     cid = m.chat.id
@@ -51,5 +25,17 @@ def command_help(m):
         help_text += "/" + key + ": "
         help_text += commands[key] + "\n"
     bot.send_message(cid, help_text)  # send the generated help page
+
+# TODO
+# Returns the fotopizza of the user requested
+@bot.message_handler(commands=['fotopizza'])
+    cid = m.chat.id
+    bot.send_message(cid, 'Comando en desarrollo')
+
+# TODO
+# Returns the remaining time for the event requested
+@bot.message_handler(commands=['hype'])
+    cid = m.chat.id
+    bot.send_message(cid, 'Comando en desarrollo')
 
 bot.polling()
