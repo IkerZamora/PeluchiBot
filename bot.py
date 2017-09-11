@@ -29,12 +29,14 @@ def command_help(m):
 # TODO
 # Returns the fotopizza of the user requested
 @bot.message_handler(commands=['fotopizza'])
+def command_fotopizza(m):
     cid = m.chat.id
     bot.send_message(cid, 'Comando en desarrollo')
 
 # TODO
 # Returns the remaining time for the event requested
 @bot.message_handler(commands=['hype'])
+def command_hype(m):
     cid = m.chat.id
     bot.send_message(cid, 'Comando en desarrollo')
 
