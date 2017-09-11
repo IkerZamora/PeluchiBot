@@ -4,6 +4,7 @@ import os
 import telebot
 import datetime
 import sys
+from imp import reload
 
 # This will prevent errors with special characters
 reload(sys)
