@@ -1,6 +1,5 @@
 from datetime import datetime
 import json
-import pytz
 
 class Event:
 	
@@ -16,7 +15,6 @@ class Event:
 		Return: days, hours, minutes and seconds
 		        remaining for the next LAN party
 		'''
-		#now = pytz.timezone('Europe/Madrid').localize(datetime.now())
 		now = datetime.now()
 		td = self.date - now
 		days = td.days
@@ -42,7 +40,6 @@ class Events:
 			day = current['date']['day']
 			hour = current['date']['hour']
 			minute = current['date']['minute']
-			#date = pytz.timezone('Europe/Madrid').localize(datetime(year,month,day,hour,minute))
 			date = datetime(year,month,day,hour,minute)
 			current_event = Event(current['acronym'], date, current['first_edition_year'], current['name'])
 			self.events.append(current_event)

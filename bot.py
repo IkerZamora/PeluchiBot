@@ -17,7 +17,7 @@ bot = telebot.TeleBot(token)
 commands = {
 # command description used in the 'ayuda' command, keep these up to date
     'ayuda': 'Obtener información acerca de los comandos',
-    'hype': 'Tiempo restante para la próxima EE ó AE ó GE ó Gamergy (Próximamente)'
+    'hype': 'Tiempo restante para la próxima EE ó AE ó GE. Uso: /hype (EE | AE | GE)'
 }
 
 # Help command. Returns all the commands with their help text
