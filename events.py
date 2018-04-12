@@ -16,7 +16,7 @@ class Event:
 		Return: days, hours, minutes and seconds
 		        remaining for the next LAN party
 		'''
-		now = datetime.now(tzinfo=pytz.timezone('Europe/Madrid'))
+		now = pytz.timezone('Europe/Madrid').localize(datetime.now())
 		td = self.date - now
 		days = td.days
 		hours = td.seconds // 3600
@@ -41,8 +41,7 @@ class Events:
 			day = current['date']['day']
 			hour = current['date']['hour']
 			minute = current['date']['minute']
-			date = datetime(year,month,day,hour,minute)
-			date.replace(tzinfo=pytz.timezone('Europe/Madrid'))
+			date = pytz.timezone('Europe/Madrid').localize(datetime(year,month,day,hour,minute))
 			current_event = Event(current['acronym'], date, current['first_edition_year'], current['name'])
 			self.events.append(current_event)
 
