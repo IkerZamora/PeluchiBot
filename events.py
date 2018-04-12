@@ -42,6 +42,7 @@ class Events:
 			hour = current['date']['hour']
 			minute = current['date']['minute']
 			date = datetime(year,month,day,hour,minute)
+			date.replace(tzinfo=pytz.timezone('Europe/Madrid'))
 			current_event = Event(current['acronym'], date, current['first_edition_year'], current['name'])
 			self.events.append(current_event)
 
