@@ -15,7 +15,7 @@ class Event:
 		Return: days, hours, minutes and seconds
 		        remaining for the next LAN party
 		'''
-		now = datetime.now()
+		now = datetime.now(pytz.timezone('Europe/Madrid'))
 		td = self.date - now
 		days = td.days
 		hours = td.seconds // 3600
