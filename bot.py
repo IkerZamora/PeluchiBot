@@ -75,6 +75,9 @@ def main(argv):
         updater.start_webhook(listen='0.0.0.0', url_path=token,
             port=int(os.environ.get('PORT', '8443')))
         try:
+            print(os.environ['URL'])
+            print(token)
+            print(os.path.join(os.environ['URL'], token))
             updater.bot.set_webhook(os.path.join(os.environ['URL'], token))
         except KeyError:
             logger.exception('Please set the environment variable URL')
