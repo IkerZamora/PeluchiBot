@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from config import Config
 from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
     InlineKeyboardButton, InlineKeyboardMarkup)
