@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from config import Config, Webhook
 from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
     InlineKeyboardButton, InlineKeyboardMarkup)
@@ -8,10 +7,14 @@ from telegram.ext import (Updater, CommandHandler)
 
 import argparse
 import datetime
+import logging
 import os
 import sys
 
-ENVIRONMETNS = ['development','production']
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 COMMANDS = {
     # command description used in the 'ayuda' command, keep these up to date
@@ -58,25 +61,24 @@ def hype_command(bot, update):
 def main(argv):
 
     parser = argparse.ArgumentParser('bot.py')
-    parser.add_argument('--environment', dest='env', required=True,
-        choices=ENVIRONMETNS, help='sets bot\'s deployment environment')
+    parser.add_argument('--webhooks', action='store_true',
+        help='enables webhooks instead of pooling')
     args = parser.parse_args(argv)
 
-    if args.env not in ENVIRONMETNS:
-        parser.print_help()
-        sys.exit(1)
-
-    if args.env == 'development':
-        configuration = Config
-        updater = Updater(configuration.TELEGRAM_TOKEN)
-
-    elif args.env == 'production':
-        configuration = Webhook
-        updater = Updater(configuration.TELEGRAM_TOKEN)
-        updater.start_webhook(listen='0.0.0.0', port=configuration.PORT,
-            url_path=configuration.TELEGRAM_TOKEN)
-        updater.bot.set_webhook(configuration.URL \
-            + configuration.TELEGRAM_TOKEN)
+    try:
+        token = os.environ['TELEGRAM_TOKEN']
+    except KeyError:
+        logger.exception('Please set the environment variable TELEGRAM_TOKEN')
+        sys.exit(2)
+    updater = Updater(token)
+    if args.webhooks:
+        updater.start_webhook(listen='0.0.0.0', url_path=token,
+            port=int(os.environ.get('PORT', '8443')))
+        try:
+            updater.bot.set_webhook(os.path.join(os.environ['URL'], token))
+        except KeyError:
+            logger.exception('Please set the environment variable URL')
+            sys.exit(2)
 
     dispatcher = updater.dispatcher
 
