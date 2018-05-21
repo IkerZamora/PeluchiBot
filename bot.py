@@ -59,7 +59,7 @@ def main():
         print('Please set the environment variable TELEGRAM_TOKEN')
         sys.exit(1)
 
-    updater = Updater(Config.TELEGRAM_TOKEN)
+    updater = Updater(token)
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
