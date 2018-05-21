@@ -27,7 +27,7 @@ def help_command(bot, update):
     # send the generated help page
     bot.send_message(chat_id=update.message.chat_id, text=help_text)
 
-# Returns the remaining time for the event requested
+# Hype command. Returns the remaining time for the event requested
 def hype_command(bot, update):
     chat_id = update.message.chat_id
     param = ''
