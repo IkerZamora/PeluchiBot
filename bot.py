@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
 
+from config import Config, Webhook
 from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
     InlineKeyboardButton, InlineKeyboardMarkup)
 from telegram.ext import (Updater, CommandHandler)
 
+import argparse
 import datetime
 import os
 import sys
+
+ENVIRONMETNS = ['development','production']
 
 COMMANDS = {
     # command description used in the 'ayuda' command, keep these up to date
@@ -51,14 +55,29 @@ def hype_command(bot, update):
         days, hours, minutes, seconds)
     bot.send_message(chat_id=chat_id, text=text)
 
-def main():
-    try:
-        token = os.environ['TELEGRAM_TOKEN']
-    except KeyError:
-        print('Please set the environment variable TELEGRAM_TOKEN')
+def main(argv):
+
+    parser = argparse.ArgumentParser('bot.py')
+    parser.add_argument('--environment', dest='env', required=True,
+        choices=ENVIRONMETNS, help='sets bot\'s deployment environment')
+    args = parser.parse_args(argv)
+
+    if args.env not in ENVIRONMETNS:
+        parser.print_help()
         sys.exit(1)
 
-    updater = Updater(token)
+    if args.env == 'development':
+        configuration = Config
+        updater = Updater(configuration.TELEGRAM_TOKEN)
+
+    elif args.env == 'production':
+        configuration = Webhook
+        updater = Updater(configuration.TELEGRAM_TOKEN)
+        updater.start_webhook(listen='0.0.0.0', port=configuration.PORT,
+            url_path=configuration.TELEGRAM_TOKEN)
+        updater.bot.set_webhook(configuration.URL \
+            + configuration.TELEGRAM_TOKEN)
+
     dispatcher = updater.dispatcher
 
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
@@ -68,4 +87,4 @@ def main():
     updater.idle()
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
