@@ -61,6 +61,11 @@ class Events:
         soonest_date = now + timedelta(days=366) # Using Leap year just in case.
         next_event = None
         for event in self.events:
+            print(now)
+            print(event.date)
+            print(soonest_date)
+            print(event.date > now)
+            print(event.date < soonest_date)
             if event.date > now and event.date < soonest_date:
                 next_event = event
                 soonest_date = event.date
