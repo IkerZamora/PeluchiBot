@@ -38,7 +38,6 @@ def hype_command(bot, update):
     chat_id = update.message.chat_id
     args = update.message.text.split() # Array of string '/hype' + [parameter]
     events = Events()
-    print(args)
     if len(args) == 1: # No parameter used
         event = events.next_event()
     else:
