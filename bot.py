@@ -19,8 +19,8 @@ logger = logging.getLogger(__name__)
 COMMANDS = {
     # command description used in the 'ayuda' command, keep these up to date
     'ayuda': 'Obtener información acerca de los comandos',
-    'hype': 'Tiempo restante para la próxima EE ó AE ó GE.' \
-        + ' Uso: /hype (EE | AE | GE)'
+    'hype': 'Tiempo restante para la próxima EE, AE ó GE.' \
+        + ' Uso: /hype [EE | AE | GE]'
 }
 
 # Help command. Returns all the commands with their help text
@@ -36,18 +36,15 @@ def help_command(bot, update):
 # Hype command. Returns the remaining time for the event requested
 def hype_command(bot, update):
     chat_id = update.message.chat_id
-    param = ''
-    try:
-        param = update.message.text.split()[1].lower()
-    except IndexError:
-        bot.send_message(
-            chat_id, 'Se necesita un atributo. Uso: /hype (EE | GE | AE)')
-        return
+    args = update.message.text.split() # Array of string '/hype' + [parameter]
     events = Events()
-    event = events.get_event(param)
-    if event == 0:
+    if len(args) == 1: # No parameter used
+        event = events.next_event()
+    else:
+        event = events.get_event(args[1].lower())
+    if not event:
         bot.send_message(
-            chat_id, 'Ese evento no existe. Uso: /hype (EE | GE | AE)')
+            chat_id, 'Ese evento no existe. Uso: /hype [EE | GE | AE]')
         return
     days, hours, minutes, seconds = event.time_left()
     text = 'Tiempo restante para la %s%d ' % (
@@ -75,9 +72,6 @@ def main(argv):
         updater.start_webhook(listen='0.0.0.0', url_path=token,
             port=int(os.environ.get('PORT', '8443')))
         try:
-            print(os.environ['URL'])
-            print(token)
-            print(os.path.join(os.environ['URL'], token))
             updater.bot.set_webhook(os.path.join(os.environ['URL'], token))
         except KeyError:
             logger.exception('Please set the environment variable URL')
