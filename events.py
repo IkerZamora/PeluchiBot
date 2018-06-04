@@ -41,7 +41,11 @@ class Events:
             hour = current['date']['hour']
             minute = current['date']['minute']
             date = datetime(year,month,day,hour,minute)
-            current_event = Event(current['acronym'], date, current['first_edition_year'], current['name'])
+            current_event = Event(
+                current['acronym'],
+                date,
+                current['first_edition_year'],
+                current['name'])
             self.events.append(current_event)
 
     def get_event(self, acronym):
@@ -54,7 +58,7 @@ class Events:
     def next_event(self):
         now = datetime.now()
         # Since events occur annually max. time-lapse is 1 year.
-        soonest_date = now + timedelta(years=1)
+        soonest_date = now + timedelta(days=366) # Using Leap year just in case.
         next_event = None
         for event in self.events:
             if event.date > now and event.date < sooner_date:
