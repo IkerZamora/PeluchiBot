@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
 from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
     InlineKeyboardButton, InlineKeyboardMarkup)
 from telegram.ext import (Updater, CommandHandler)
 
 import argparse
-import datetime
 import logging
 import os
 import sys
@@ -37,23 +37,38 @@ def help_command(bot, update):
 def hype_command(bot, update):
     chat_id = update.message.chat_id
     args = update.message.text.split() # Array of string '/hype' + [parameter]
+    using_args = len(args) > 1
     events = Events()
-    if len(args) == 1: # No parameter used
-        event = events.next_event()
-    else:
+    if using_args:
         event = events.get_event(args[1].lower())
-    if not event:
-        bot.send_message(
-            chat_id, 'Ese evento no existe. Uso: /hype [EE | GE | AE]')
-        return
-    days, hours, minutes, seconds = event.time_left()
-    text = 'Tiempo restante para la %s%d ' % (
-    event.acronym, event.edition)
-    text += '(%d-%d-%d):\n' % (
-        event.date.year, event.date.month, event.date.day)
-    text += ' %d días, %d horas, %d minutos y %d segundos' % (
-        days, hours, minutes, seconds)
-    bot.send_message(chat_id=chat_id, text=text)
+    else:
+        event = events.next_event()
+    if event:
+        now = datetime.now()
+        if event.date > now:
+            days, hours, minutes, seconds = event.time_left()
+            text = 'Tiempo restante para la %s%d ' % (
+            event.acronym, event.edition)
+            text += '(%d-%d-%d):\n' % (
+                event.date.year, event.date.month, event.date.day)
+            text += ' %d días, %d horas, %d minutos y %d segundos' % (
+                days, hours, minutes, seconds)
+            bot.send_message(chat_id=chat_id, text=text)
+        else:
+            text = 'Aún no se ha anunciado la fecha para la %s%d ' % (
+                event.acronym, event.edition + 1)
+            bot.send_message(chat_id=chat_id, text=text)
+    else:
+        if using_args:
+            bot.send_message(
+                chat_id, 'Ese evento no existe. Uso: /hype [EE | GE | AE]'
+            )
+        else:
+            bot.send_message(
+                chat_id,
+                'Aún no se ha anunciado la fecha de ningún evento. '
+                + 'Relaja esos pezones.'
+            )
 
 def main(argv):
 
