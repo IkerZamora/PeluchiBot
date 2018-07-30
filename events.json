@@ -12,7 +12,8 @@
 					"hour": 16,
 					"minute": 0
 				},
-				"first_edition_year": 1993
+				"first_edition_year": 1993,
+				"url": "https://euskalencounter.org/todo-para-asistentes.html"
 			}
 		},
 		{
@@ -26,7 +27,8 @@
 					"hour": 16,
 					"minute": 0
 				},
-				"first_edition_year": 2007
+				"first_edition_year": 2007,
+				"url": "https://gipuzkoaencounter.org/todo-para-asistentes.html"
 			}
 		},
 		{
@@ -40,7 +42,8 @@
 					"hour": 16,
 					"minute": 0
 				},
-				"first_edition_year": 2014
+				"first_edition_year": 2014,
+				"url": "https://arabaencounter.org/todo-para-asistentes.html"
 			}
 		}
 	]

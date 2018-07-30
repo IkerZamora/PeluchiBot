@@ -23,6 +23,8 @@ COMMANDS = {
         + ' Uso: /hype [EE | AE | GE]'
 }
 
+EVENTS = Events()
+
 # Help command. Returns all the commands with their help text
 def help_command(bot, update):
     help_text = 'Lista de comandos disponibles: \n'
@@ -38,11 +40,10 @@ def hype_command(bot, update):
     chat_id = update.message.chat_id
     args = update.message.text.split() # Array of string '/hype' + [parameter]
     using_args = len(args) > 1
-    events = Events()
     if using_args:
-        event = events.get_event(args[1].lower())
+        event = EVENTS.get_event(args[1].lower())
     else:
-        event = events.next_event()
+        event = EVENTS.next_event()
     if event:
         now = datetime.now()
         if event.date > now:
@@ -55,6 +56,7 @@ def hype_command(bot, update):
                 days, hours, minutes, seconds)
             bot.send_message(chat_id=chat_id, text=text)
         else:
+            EVENTS.set_event(event.acronym, event.update_date())
             text = 'Aún no se ha anunciado la fecha para la %s%d ' % (
                 event.acronym, event.edition + 1)
             bot.send_message(chat_id=chat_id, text=text)
