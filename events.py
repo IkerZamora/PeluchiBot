@@ -5,6 +5,7 @@ import json
 import locale
 import logging
 import requests
+import requests_cache
 
 locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
 
@@ -34,6 +35,14 @@ class Event:
 
     def update_date(self):
         response = requests.get(self.url)
+        if response.from_cache:
+            self.logger.info(
+                'Loading request for %s event from cache.' % self.name
+            )
+        else:
+            self.logger.info(
+                'Caching request for %s event to cache.' % self.name
+            )
         if response.history:
             url_edition = int(response.url.split('.')[0]
                 .replace('https://', '').replace(self.acronym.lower(), '')
@@ -75,7 +84,18 @@ class Event:
 
 class Events:
 
+    CACHE_EXPIRE = 3600
+
     def __init__(self):
+        self.logger = logging.getLogger(__name__)
+        requests_cache.install_cache(
+            cache_name='date_cache',
+            backend='memory',
+            expire_after=Events.CACHE_EXPIRE
+        )
+        self.logger.info('Initialized in-memory cache for event date updater ' 
+            + 'with expiration set for %d minutes.' % (Events.CACHE_EXPIRE / 60)
+        )
         self.events = self._load_events()
 
     def _load_events(self, filename = 'events.json'):
