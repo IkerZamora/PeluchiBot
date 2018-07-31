@@ -1,4 +1,7 @@
-#Secret folders
+# MacOS Bullshit.
+.DS_Store
+
+# Secret folders
 config/
 
 # Byte-compiled / optimized / DLL files

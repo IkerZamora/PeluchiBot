@@ -20,10 +20,17 @@ COMMANDS = {
     # command description used in the 'ayuda' command, keep these up to date
     'ayuda': 'Obtener información acerca de los comandos',
     'hype': 'Tiempo restante para la próxima EE, AE ó GE.' \
-        + ' Uso: /hype [EE | AE | GE]'
+        + ' Uso: /hype [EE | AE | GE]',
+    'lalala': 'Canto para ti \u2665'
 }
 
 EVENTS = Events()
+
+def lalala_command(bot, update):
+    bot.send_audio(
+        chat_id=update.message.chat_id,
+        audio=open('./assets/snufi_schnuffel_mi_peluchito.mp3', 'rb')
+    )
 
 # Help command. Returns all the commands with their help text
 def help_command(bot, update):
@@ -100,6 +107,7 @@ def main(argv):
 
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
     dispatcher.add_handler(CommandHandler('hype', hype_command))
+    dispatcher.add_handler(CommandHandler('lalala', lalala_command))
 
     updater.start_polling()
     updater.idle()
