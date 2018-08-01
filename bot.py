@@ -28,10 +28,10 @@ COMMANDS = {
 EVENTS = Events()
 
 def greetings(bot, update):
+    chat_id = update.message.chat.id
     new_members = update.message.new_chat_members
     left_member = update.message.left_chat_member
     if new_members:
-        chat_id = update.message.chat.id
         for new_member in new_members:
             # Bot was added to a group chat
             if new_member.username == BOTNAME:
@@ -54,7 +54,7 @@ def greetings(bot, update):
                 photo=open('./assets/apastar.webp', 'rb')
             )
             bot.send_photo(
-                chat_id=left_chat_member.id,
+                chat_id=left_member.id,
                 photo=open('./assets/apastar.webp', 'rb')
             )
 
