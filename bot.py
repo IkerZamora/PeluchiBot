@@ -4,7 +4,7 @@ from datetime import datetime
 from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
     InlineKeyboardButton, InlineKeyboardMarkup)
-from telegram.ext import (Updater, CommandHandler)
+from telegram.ext import (Filters, CommandHandler, MessageHandler, Updater)
 
 import argparse
 import logging
@@ -25,6 +25,17 @@ COMMANDS = {
 }
 
 EVENTS = Events()
+
+def greetings(bot, update):
+    chat_id = update.message.chat_id
+    new_members = update.message.new_chat_members
+    for member in new_members:
+        if not member.is_bot:
+            bot.send_message(
+                chat_id=chat_id,
+                text='Bienvenido al grupo {}. ¿Eres tu mi peluchito?'
+                    .format(member.name)
+            )
 
 def lalala_command(bot, update):
     bot.send_audio(
@@ -94,6 +105,7 @@ def main(argv):
         logger.exception('Please set the environment variable TELEGRAM_TOKEN')
         sys.exit(2)
     updater = Updater(token)
+    job_queue = updater.job_queue
     if args.webhooks:
         updater.start_webhook(listen='0.0.0.0', url_path=token,
             port=int(os.environ.get('PORT', '8443')))
@@ -105,6 +117,7 @@ def main(argv):
 
     dispatcher = updater.dispatcher
 
+    dispatcher.add_handler(MessageHandler(Filters.text, greetings))
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
     dispatcher.add_handler(CommandHandler('hype', hype_command))
     dispatcher.add_handler(CommandHandler('lalala', lalala_command))
