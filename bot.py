@@ -29,6 +29,7 @@ EVENTS = Events()
 
 def greetings(bot, update):
     new_members = update.message.new_chat_members
+    left_member = update.message.left_chat_member
     if new_members:
         chat_id = update.message.chat.id
         for new_member in new_members:
@@ -46,7 +47,6 @@ def greetings(bot, update):
                     text='Bienvenido al grupo {}. ¿Eres tu mi peluchito?'
                         .format(new_member.name)
                 )
-    left_member = update.message.left_chat_member
     elif left_member:
         if left_chat_member.username != BOTNAME:
             bot.send_photo(
