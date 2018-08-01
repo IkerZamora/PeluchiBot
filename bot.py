@@ -31,8 +31,6 @@ def greetings(bot, update):
     chat_id = update.message.chat.id
     new_members = update.message.new_chat_members
     left_member = update.message.left_chat_member
-    logger.info(new_members)
-    logger.info(left_member)
     if new_members:
         for new_member in new_members:
             # Bot was added to a group chat
@@ -55,10 +53,11 @@ def greetings(bot, update):
                 chat_id=chat_id,
                 photo=open('./assets/apastar.webp', 'rb')
             )
-            bot.send_photo(
-                chat_id=left_member.id,
-                photo=open('./assets/apastar.webp', 'rb')
-            )
+            if not left_member.is_bot:
+                bot.send_photo(
+                    chat_id=left_member.id,
+                    photo=open('./assets/apastar.webp', 'rb')
+                )
 
 def lalala_command(bot, update):
     bot.send_audio(
