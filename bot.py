@@ -16,6 +16,7 @@ logging.basicConfig(
     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+BOTNAME = None
 COMMANDS = {
     # command description used in the 'ayuda' command, keep these up to date
     'ayuda': 'Obtener información acerca de los comandos',
@@ -27,10 +28,17 @@ COMMANDS = {
 EVENTS = Events()
 
 def greetings(bot, update):
-    chat_id = update.message.chat_id
-    new_members = update.message.new_chat_members
-    for member in new_members:
-        if not member.is_bot:
+    if update.message.new_chat_member is not None:
+        chat_id = update.message.chat.id
+        # Bot was added to a group chat
+        if update.message.new_chat_member.username == BOTNAME:
+            bot.send_message(
+                chat_id=chat_id,
+                text='Hola a todos soy {} y os daré muchos mimitos!'
+                    .format(BOTNAME)
+            )
+        # Another user joined the chat
+        else:
             bot.send_message(
                 chat_id=chat_id,
                 text='Bienvenido al grupo {}. ¿Eres tu mi peluchito?'
@@ -93,7 +101,6 @@ def hype_command(bot, update):
             )
 
 def main(argv):
-
     parser = argparse.ArgumentParser('bot.py')
     parser.add_argument('--webhooks', action='store_true',
         help='enables webhooks instead of pooling')
@@ -104,6 +111,12 @@ def main(argv):
     except KeyError:
         logger.exception('Please set the environment variable TELEGRAM_TOKEN')
         sys.exit(2)
+    try:
+        global BOTNAME
+        BOTNAME = os.environ['BOTNAME']
+    except KeyError:
+        logger.exception('Please set the environment variable BOTNAME')
+
     updater = Updater(token)
     job_queue = updater.job_queue
     if args.webhooks:
@@ -117,7 +130,11 @@ def main(argv):
 
     dispatcher = updater.dispatcher
 
-    dispatcher.add_handler(MessageHandler(Filters.text, greetings))
+    dispatcher.add_handler(
+        MessageHandler(
+            Filters.status_update.new_chat_members, greetings
+        )
+    )
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
     dispatcher.add_handler(CommandHandler('hype', hype_command))
     dispatcher.add_handler(CommandHandler('lalala', lalala_command))
