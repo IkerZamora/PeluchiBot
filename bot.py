@@ -28,22 +28,24 @@ COMMANDS = {
 EVENTS = Events()
 
 def greetings(bot, update):
-    if update.message.new_chat_member is not None:
+    new_members = update.message.new_chat_members
+    if new_members:
         chat_id = update.message.chat.id
-        # Bot was added to a group chat
-        if update.message.new_chat_member.username == BOTNAME:
-            bot.send_message(
-                chat_id=chat_id,
-                text='Hola a todos soy {} y os daré muchos mimitos!'
-                    .format(BOTNAME)
-            )
-        # Another user joined the chat
-        else:
-            bot.send_message(
-                chat_id=chat_id,
-                text='Bienvenido al grupo {}. ¿Eres tu mi peluchito?'
-                    .format(member.name)
-            )
+        for new_member in new_members:
+            # Bot was added to a group chat
+            if new_member.username == BOTNAME:
+                bot.send_message(
+                    chat_id=chat_id,
+                    text='Hola a todos soy {} y os daré muchos mimitos!'
+                        .format(BOTNAME)
+                )
+            # Another user joined the chat
+            else:
+                bot.send_message(
+                    chat_id=chat_id,
+                    text='Bienvenido al grupo {}. ¿Eres tu mi peluchito?'
+                        .format(new_member.name)
+                )
 
 def lalala_command(bot, update):
     bot.send_audio(
