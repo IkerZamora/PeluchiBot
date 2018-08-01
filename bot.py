@@ -46,6 +46,17 @@ def greetings(bot, update):
                     text='Bienvenido al grupo {}. ¿Eres tu mi peluchito?'
                         .format(new_member.name)
                 )
+    left_member = update.message.left_chat_member
+    elif left_member:
+        if left_chat_member.username != BOTNAME:
+            bot.send_photo(
+                chat_id=chat_id,
+                photo=open('assets/apastar.webp', 'rb')
+            )
+            bot.send_photo(
+                chat_id=left_chat_member.id,
+                photo=open('assets/apastar.webp', 'rb')
+            )
 
 def lalala_command(bot, update):
     bot.send_audio(
