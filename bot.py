@@ -31,6 +31,8 @@ def greetings(bot, update):
     chat_id = update.message.chat.id
     new_members = update.message.new_chat_members
     left_member = update.message.left_chat_member
+    logger.info(new_members)
+    logger.info(left_member)
     if new_members:
         for new_member in new_members:
             # Bot was added to a group chat
@@ -143,11 +145,7 @@ def main(argv):
 
     dispatcher = updater.dispatcher
 
-    dispatcher.add_handler(
-        MessageHandler(
-            Filters.status_update, greetings
-        )
-    )
+    dispatcher.add_handler(MessageHandler(Filters.status_update, greetings))
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
     dispatcher.add_handler(CommandHandler('hype', hype_command))
     dispatcher.add_handler(CommandHandler('lalala', lalala_command))
