@@ -48,7 +48,7 @@ def greetings(bot, update):
                         .format(new_member.name)
                 )
     elif left_member:
-        if left_chat_member.username != BOTNAME:
+        if left_member.username != BOTNAME:
             bot.send_photo(
                 chat_id=chat_id,
                 photo=open('./assets/apastar.webp', 'rb')
