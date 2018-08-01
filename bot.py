@@ -145,7 +145,7 @@ def main(argv):
 
     dispatcher.add_handler(
         MessageHandler(
-            Filters.status_update.new_chat_members, greetings
+            Filters.status_update, greetings
         )
     )
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
