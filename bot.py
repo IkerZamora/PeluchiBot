@@ -4,8 +4,7 @@ from datetime import datetime
 from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
     InlineKeyboardButton, InlineKeyboardMarkup)
-from telegram.ext import (Filters, CommandHandler, MessageHandler,
-    StringRegexHandler, Updater)
+from telegram.ext import (Filters, CommandHandler, MessageHandler, Updater)
 
 import argparse
 import logging
@@ -59,6 +58,11 @@ def greetings(bot, update):
                     chat_id=left_member.id,
                     photo=open('./assets/apastar.webp', 'rb')
                 )
+
+def big_brother(bot, update):
+    logger.info('Big Brother is reading your messages.')
+    if update.message.text == 'resumen?':
+        apastar_resumen(bot, update)
 
 def apastar_resumen(bot, update):
     logger.info('a pastar regex triggered!')
@@ -153,7 +157,7 @@ def main(argv):
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
     dispatcher.add_handler(CommandHandler('hype', hype_command))
     dispatcher.add_handler(CommandHandler('lalala', lalala_command))
-    dispatcher.add_handler(StringRegexHandler(r'^(resumen\?)$', apastar_resumen))
+    dispatcher.add_handler(MessageHandler(Filters.text, big_brother))
 
     updater.start_polling()
     updater.idle()
