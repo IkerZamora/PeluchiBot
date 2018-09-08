@@ -50,18 +50,18 @@ def greetings(bot, update):
                 )
     elif left_member:
         if left_member.username != BOTNAME:
-            bot.send_photo(
+            bot.send_sticker(
                 chat_id=chat_id,
-                photo=open('./assets/apastar.webp', 'rb')
+                sticker=open('./assets/apastar.webp', 'rb')
             )
             if not left_member.is_bot:
-                bot.send_photo(
+                bot.send_sticker(
                     chat_id=left_member.id,
-                    photo=open('./assets/apastar.webp', 'rb')
+                    sticker=open('./assets/apastar.webp', 'rb')
                 )
 
 def apastar_resumen(bot, update):
-    update.message.reply_photo(photo=open('./assets/apastar.webp', 'rb'))
+    update.message.reply_sticker(sticker=open('./assets/apastar.webp', 'rb'))
 
 def lalala_command(bot, update):
     bot.send_audio(
