@@ -4,7 +4,8 @@ from datetime import datetime
 from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
     InlineKeyboardButton, InlineKeyboardMarkup)
-from telegram.ext import (Filters, CommandHandler, MessageHandler, Updater)
+from telegram.ext import (Filters, CommandHandler, MessageHandler, RegexHandler,
+    Updater)
 
 import argparse
 import logging
@@ -58,6 +59,9 @@ def greetings(bot, update):
                     chat_id=left_member.id,
                     photo=open('./assets/apastar.webp', 'rb')
                 )
+
+def apastar_resumen(bot, update):
+    bot.reply_photo(photo=open('./assets/apastar.webp', 'rb'))
 
 def lalala_command(bot, update):
     bot.send_audio(
@@ -148,6 +152,7 @@ def main(argv):
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
     dispatcher.add_handler(CommandHandler('hype', hype_command))
     dispatcher.add_handler(CommandHandler('lalala', lalala_command))
+    dispatcher.add_handler(RegexHandler('^resumen?$', apastar_resumen))
 
     updater.start_polling()
     updater.idle()
