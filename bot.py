@@ -61,8 +61,7 @@ def greetings(bot, update):
                 )
 
 def apastar_resumen(bot, update):
-    logger.info('a pastar regex triggered!')
-    bot.reply_photo(photo=open('./assets/apastar.webp', 'rb'))
+    update.message.reply_photo(photo=open('./assets/apastar.webp', 'rb'))
 
 def lalala_command(bot, update):
     bot.send_audio(
