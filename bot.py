@@ -61,6 +61,7 @@ def greetings(bot, update):
                 )
 
 def apastar_resumen(bot, update):
+    logger.info('a pastar regex triggered!')
     bot.reply_photo(photo=open('./assets/apastar.webp', 'rb'))
 
 def lalala_command(bot, update):
@@ -152,7 +153,7 @@ def main(argv):
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
     dispatcher.add_handler(CommandHandler('hype', hype_command))
     dispatcher.add_handler(CommandHandler('lalala', lalala_command))
-    dispatcher.add_handler(RegexHandler('^resumen?$', apastar_resumen))
+    dispatcher.add_handler(RegexHandler('^resumen\?$', apastar_resumen))
 
     updater.start_polling()
     updater.idle()
