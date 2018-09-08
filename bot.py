@@ -5,7 +5,7 @@ from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
     InlineKeyboardButton, InlineKeyboardMarkup)
 from telegram.ext import (Filters, CommandHandler, MessageHandler,
-    StringRegexHandler, Updater)
+    RegexHandler, Updater)
 
 import argparse
 import logging
@@ -153,7 +153,7 @@ def main(argv):
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
     dispatcher.add_handler(CommandHandler('hype', hype_command))
     dispatcher.add_handler(CommandHandler('lalala', lalala_command))
-    dispatcher.add_handler(StringRegexHandler(r'^(resumen\?)$', apastar_resumen))
+    dispatcher.add_handler(RegexHandler(r'^(resumen\?)$', apastar_resumen))
 
     updater.start_polling()
     updater.idle()
