@@ -60,11 +60,6 @@ def greetings(bot, update):
                     sticker=open('./assets/apastar.webp', 'rb')
                 )
 
-def big_brother(bot, update):
-    text = update.message.text
-    if text == 'resumen?' or text == '/resumen':
-        apastar_resumen(bot, update)
-
 def apastar_resumen(bot, update):
     update.message.reply_sticker(sticker=open('./assets/apastar.webp', 'rb'))
 
@@ -157,7 +152,8 @@ def main(argv):
     dispatcher.add_handler(CommandHandler('ayuda', help_command))
     dispatcher.add_handler(CommandHandler('hype', hype_command))
     dispatcher.add_handler(CommandHandler('lalala', lalala_command))
-    dispatcher.add_handler(MessageHandler(Filters.text, big_brother))
+    dispatcher.add_handler(CommandHandler('resumen', apastar_resumen))
+    dispatcher.add_handler(RegexHandler(r'^(resumen\?)$', apastar_resumen))
 
     updater.start_polling()
     updater.idle()
