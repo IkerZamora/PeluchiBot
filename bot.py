@@ -17,7 +17,8 @@ logging.basicConfig(
     level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-BOTNAME = None
+BOT_NAME = None
+BOT_ADMINS = []
 COMMANDS = {
     # command description used in the 'ayuda' command, keep these up to date
     'ayuda': 'Obtener información acerca de los comandos',
@@ -35,11 +36,11 @@ def greetings(bot, update):
     if new_members:
         for new_member in new_members:
             # Bot was added to a group chat
-            if new_member.username == BOTNAME:
+            if new_member.username == BOT_NAME:
                 bot.send_message(
                     chat_id=chat_id,
                     text='Hola a todos soy {} y os daré muchos mimitos!'
-                        .format(BOTNAME)
+                        .format(BOT_NAME)
                 )
             # Another user joined the chat
             else:
@@ -49,7 +50,7 @@ def greetings(bot, update):
                         .format(new_member.name)
                 )
     elif left_member:
-        if left_member.username != BOTNAME:
+        if left_member.username != BOT_NAME:
             bot.send_sticker(
                 chat_id=chat_id,
                 sticker=open('./assets/apastar.webp', 'rb')
@@ -127,13 +128,18 @@ def main(argv):
     try:
         token = os.environ['TELEGRAM_TOKEN']
     except KeyError:
-        logger.exception('Please set the environment variable TELEGRAM_TOKEN')
+        logger.exception('Please set the TELEGRAM_TOKEN environment variable')
         sys.exit(2)
     try:
-        global BOTNAME
-        BOTNAME = os.environ['BOTNAME']
+        BOT_NAME = os.environ['BOT_NAME']
     except KeyError:
-        logger.exception('Please set the environment variable BOTNAME')
+        logger.exception('Please set the BOT_NAME environment variable')
+        sys.exit(2)
+    try:
+        BOT_ADMINS.append(os.environ['ADMIN'])
+    except KeyError:
+        logger.exception('Please set the ADMIN environment variable')
+        sys.exit(2)
 
     updater = Updater(token)
     job_queue = updater.job_queue
