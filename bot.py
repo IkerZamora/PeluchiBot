@@ -101,7 +101,7 @@ def hype_command(bot, update):
                 days, hours, minutes, seconds)
             bot.send_message(chat_id=chat_id, text=text)
         else:
-            EVENTS.set_event(event.acronym, event.update_date())
+            EVENTS.set_event(event.acronym, event.update_event())
             text = ('Aún no se ha anunciado la fecha para la {}{}. '
                 .format(event.acronym, event.edition + 1)
                 + 'Relaja esos pezones.'

@@ -33,7 +33,7 @@ class Event:
         seconds = (td.seconds % 3600) % 60
         return days, hours, minutes, seconds
 
-    def update_date(self):
+    def update_event(self):
         response = requests.get(self.url)
         if response.from_cache:
             self.logger.info(
@@ -70,6 +70,7 @@ class Event:
                         self.date.minute
                     )
                     self.date = date
+                    self.edition += 1
                 except:
                     self.logger.exception()
             else:
@@ -122,7 +123,7 @@ class Events:
                 url
             )
             if date < now:
-                current_event = current_event.update_date()
+                current_event = current_event.update_event()
             events.append(current_event)
         return events
 
