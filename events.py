@@ -122,8 +122,8 @@ class Events:
                 current['name'],
                 url
             )
-            if date < now:
-                current_event = current_event.update_event()
+            #if date < now:
+            #    current_event = current_event.update_event()
             events.append(current_event)
         return events
 
