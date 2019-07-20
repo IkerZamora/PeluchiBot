@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import argparse
+import logging
+import os
+import sys
+
 from datetime import datetime
 from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
     InlineKeyboardButton, InlineKeyboardMarkup)
 from telegram.ext import (Filters, CommandHandler, MessageHandler,
     RegexHandler, Updater)
-
-import argparse
-import logging
-import os
-import sys
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -131,11 +131,13 @@ def main(argv):
         logger.exception('Please set the TELEGRAM_TOKEN environment variable')
         sys.exit(2)
     try:
+        global BOT_NAME
         BOT_NAME = os.environ['BOT_NAME']
     except KeyError:
         logger.exception('Please set the BOT_NAME environment variable')
         sys.exit(2)
     try:
+        global BOT_ADMINS
         BOT_ADMINS.append(os.environ['ADMIN'])
     except KeyError:
         logger.exception('Please set the ADMIN environment variable')
