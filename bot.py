@@ -95,10 +95,17 @@ def hype_command(bot, update):
             days, hours, minutes, seconds = event.time_left()
             text = 'Tiempo restante para la %s%d ' % (
             event.acronym, event.edition)
-            text += '(%d-%d-%d):\n' % (
-                event.date.year, event.date.month, event.date.day)
-            text += ' %d días, %d horas, %d minutos y %d segundos' % (
-                days, hours, minutes, seconds)
+            text += '({:d}-{:d}-{:d}):\n'.format(
+                    event.date.year, event.date.month, event.date.day
+                )
+            text += '{:d} día'.format(days) if days >= 1 else ''
+            text += 's ' if days > 1 else ' '
+            text += '{:d} hora'.format(hours) if hours else ''
+            text += 's ' if hours > 1 else ' '
+            text += '{:d} minuto'.format(minutes) if minutes else ''
+            text += 's ' if minutes > 1 else ' '
+            text += '{:d} segundo'.format(seconds) if seconds else ''
+            text += 's ' if seconds > 1 else ' '
             bot.send_message(chat_id=chat_id, text=text)
         else:
             EVENTS.set_event(event.acronym, event.update_event())
