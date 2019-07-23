@@ -99,15 +99,17 @@ def hype_command(bot, update):
                     event.date.year, event.date.month, event.date.day
                 )
             
+            date_list = [days, hours, minutes, seconds]
+
             text_date = ''
+            last_number = next(
+                i for i in reversed(range(len(date_list))) if date_list != 0
+            )
             for index, (number, unit) in enumerate(
-                zip(
-                    [days, hours, minutes, seconds],
-                    ['día', 'hora', 'minuto', 'segundo']
-                )
+                zip(date_list, ['día', 'hora', 'minuto', 'segundo'])
             ):
                 if text_date and number:
-                    if index == 3:
+                    if index == last_number:
                         text_date += ' y '
                     else:
                         text_date += ', '
