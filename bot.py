@@ -98,14 +98,24 @@ def hype_command(bot, update):
             text += '({:d}-{:d}-{:d}):\n'.format(
                     event.date.year, event.date.month, event.date.day
                 )
-            text += '{:d} día'.format(days) if days >= 1 else ''
-            text += 's ' if days > 1 else ' '
-            text += '{:d} hora'.format(hours) if hours else ''
-            text += 's ' if hours > 1 else ' '
-            text += '{:d} minuto'.format(minutes) if minutes else ''
-            text += 's ' if minutes > 1 else ' '
-            text += '{:d} segundo'.format(seconds) if seconds else ''
-            text += 's ' if seconds > 1 else ' '
+            
+            text_date = ''
+            for index, (number, unit) in enumerate(
+                zip(
+                    [days, hours, minutes, seconds],
+                    ['día', 'hora', 'minuto', 'segundo']
+                )
+            ):
+                if text_date and number:
+                    if index == 3:
+                        text_date += 'y '
+                    else:
+                        text_date += ', '
+                if number >= 1:
+                    text_date += '{:d} {}'.format(number, unit)
+                if number > 1:
+                    text_date += 's'
+            text += text_date
             bot.send_message(chat_id=chat_id, text=text)
         else:
             EVENTS.set_event(event.acronym, event.update_event())
