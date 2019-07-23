@@ -103,7 +103,7 @@ def hype_command(bot, update):
 
             text_date = ''
             last_number = next(
-                i for i in reversed(range(len(date_list))) if date_list != 0
+                i for i in reversed(range(len(date_list))) if date_list[i] != 0
             )
             for index, (number, unit) in enumerate(
                 zip(date_list, ['día', 'hora', 'minuto', 'segundo'])
