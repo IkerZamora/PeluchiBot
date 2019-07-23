@@ -108,7 +108,7 @@ def hype_command(bot, update):
             ):
                 if text_date and number:
                     if index == 3:
-                        text_date += 'y '
+                        text_date += ' y '
                     else:
                         text_date += ', '
                 if number >= 1:
