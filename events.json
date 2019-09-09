@@ -1,50 +1,65 @@
 {
-	"events":
-	[
-		{
-			"event":{
-				"name":"EuskalEncounter",
-				"acronym": "EE",
-				"date": {
-					"year": 2019,
-					"month": 7,
-					"day": 24,
-					"hour": 16,
-					"minute": 0
-				},
-				"first_edition_year": 1993,
-				"url": "https://euskalencounter.org/todo-para-asistentes.html"
-			}
-		},
-		{
-			"event":{
-				"name":"GipuzkoaEncounter",
-				"acronym": "GE",
-				"date": {
-					"year": 2019,
-					"month": 3,
-					"day": 21,
-					"hour": 16,
-					"minute": 0
-				},
-				"first_edition_year": 2007,
-				"url": "https://gipuzkoaencounter.org/todo-para-asistentes.html"
-			}
-		},
-		{
-			"event":{
-				"name":"ArabaEncounter",
-				"acronym": "AE",
-				"date": {
-					"year": 2018,
-					"month": 12,
-					"day": 6,
-					"hour": 16,
-					"minute": 0
-				},
-				"first_edition_year": 2014,
-				"url": "https://arabaencounter.org/todo-para-asistentes.html"
-			}
-		}
-	]
+  "events":
+  [
+    {
+      "event":{
+        "name":"EuskalEncounter",
+        "acronym": "EE",
+        "date": {
+          "year": 2019,
+          "month": 7,
+          "day": 24,
+          "hour": 16,
+          "minute": 0
+        },
+        "first_edition_year": 1993,
+        "url": "https://euskalencounter.org/todo-para-asistentes.html"
+      }
+    },
+    {
+      "event":{
+        "name":"GipuzkoaEncounter",
+        "acronym": "GE",
+        "date": {
+          "year": 2019,
+          "month": 3,
+          "day": 21,
+          "hour": 16,
+          "minute": 0
+        },
+        "first_edition_year": 2007,
+        "url": "https://gipuzkoaencounter.org/todo-para-asistentes.html"
+      }
+    },
+    {
+      "event":{
+        "name":"ArabaEncounter",
+        "acronym": "AE",
+        "date": {
+          "year": 2018,
+          "month": 12,
+          "day": 6,
+          "hour": 16,
+          "minute": 0
+        },
+        "first_edition_year": 2014,
+        "url": "https://arabaencounter.org/todo-para-asistentes.html"
+      }
+    },
+    {
+      "event":{
+        "name":"XGN R Encounter",
+        "acronym": "XGN",
+        "date": {
+          "year": 2019,
+          "month": 10,
+          "day": 10,
+          "hour": 16,
+          "minute": 0
+        },
+        "first_edition_year": 2014,
+        "url": "https://xgnr19.xgnrencounter.gal/todo-para-asistentes.html"
+      }
+    }
+  ]
 }
