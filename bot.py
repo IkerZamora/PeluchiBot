@@ -8,9 +8,9 @@ import sys
 from datetime import datetime
 from events import Event, Events
 from telegram import (ReplyKeyboardMarkup, ReplyKeyboardRemove,
-    InlineKeyboardButton, InlineKeyboardMarkup)
+                      InlineKeyboardButton, InlineKeyboardMarkup)
 from telegram.ext import (Filters, CommandHandler, MessageHandler,
-    RegexHandler, Updater)
+                          RegexHandler, Updater)
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -23,11 +23,12 @@ COMMANDS = {
     # command description used in the 'ayuda' command, keep these up to date
     'ayuda': 'Obtener información acerca de los comandos',
     'hype': 'Tiempo restante para la próxima EE, AE ó GE.' \
-        + ' Uso: /hype [EE | AE | GE]',
+    + ' Uso: /hype [EE | AE | GE]',
     'lalala': 'Canto para ti \u2665'
 }
 
 EVENTS = Events()
+
 
 def greetings(bot, update):
     chat_id = update.message.chat.id
@@ -40,14 +41,14 @@ def greetings(bot, update):
                 bot.send_message(
                     chat_id=chat_id,
                     text='Hola a todos soy {} y os daré muchos mimitos!'
-                        .format(BOT_NAME)
+                    .format(BOT_NAME)
                 )
             # Another user joined the chat
             else:
                 bot.send_message(
                     chat_id=chat_id,
                     text='Bienvenido al grupo {}. ¿Eres tu mi peluchito?'
-                        .format(new_member.name)
+                    .format(new_member.name)
                 )
     elif left_member:
         if left_member.username != BOT_NAME:
@@ -61,8 +62,10 @@ def greetings(bot, update):
                     sticker=open('./assets/apastar.webp', 'rb')
                 )
 
+
 def apastar_resumen(bot, update):
     update.message.reply_sticker(sticker=open('./assets/apastar.webp', 'rb'))
+
 
 def lalala_command(bot, update):
     bot.send_audio(
@@ -71,6 +74,8 @@ def lalala_command(bot, update):
     )
 
 # Help command. Returns all the commands with their help text
+
+
 def help_command(bot, update):
     help_text = 'Lista de comandos disponibles: \n'
     for key in sorted(COMMANDS):
@@ -81,9 +86,11 @@ def help_command(bot, update):
     bot.send_message(chat_id=update.message.chat_id, text=help_text)
 
 # Hype command. Returns the remaining time for the event requested
+
+
 def hype_command(bot, update):
     chat_id = update.message.chat_id
-    args = update.message.text.split() # Array of string '/hype' + [parameter]
+    args = update.message.text.split()  # Array of string '/hype' + [parameter]
     using_args = len(args) > 1
     if using_args:
         event = EVENTS.get_event(args[1].lower())
@@ -94,11 +101,11 @@ def hype_command(bot, update):
         if event.date > now:
             days, hours, minutes, seconds = event.time_left()
             text = 'Tiempo restante para la %s%d ' % (
-            event.acronym, event.edition)
+                event.acronym, event.edition)
             text += '({:d}-{:d}-{:d}):\n'.format(
                     event.date.year, event.date.month, event.date.day
-                )
-            
+            )
+
             date_list = [days, hours, minutes, seconds]
 
             text_date = ''
@@ -122,9 +129,9 @@ def hype_command(bot, update):
         else:
             EVENTS.set_event(event.acronym, event.update_event())
             text = ('Aún no se ha anunciado la fecha para la {}{}. '
-                .format(event.acronym, event.edition + 1)
-                + 'Relaja esos pezones.'
-            )
+                    .format(event.acronym, event.edition + 1) +
+                    'Relaja esos pezones.'
+                    )
             bot.send_message(chat_id=chat_id, text=text)
     else:
         if using_args:
@@ -134,14 +141,15 @@ def hype_command(bot, update):
         else:
             bot.send_message(
                 chat_id,
-                'Aún no se ha anunciado la fecha de ningún evento. '
-                + 'Relaja esos pezones.'
+                'Aún no se ha anunciado la fecha de ningún evento. ' +
+                'Relaja esos pezones.'
             )
+
 
 def main(argv):
     parser = argparse.ArgumentParser('bot.py')
     parser.add_argument('--webhooks', action='store_true',
-        help='enables webhooks instead of pooling')
+                        help='enables webhooks instead of pooling')
     args = parser.parse_args(argv)
 
     try:
@@ -166,7 +174,7 @@ def main(argv):
     job_queue = updater.job_queue
     if args.webhooks:
         updater.start_webhook(listen='0.0.0.0', url_path=token,
-            port=int(os.environ.get('PORT', '8443')))
+                              port=int(os.environ.get('PORT', '8443')))
         try:
             updater.bot.set_webhook(os.path.join(os.environ['URL'], token))
         except KeyError:
@@ -184,6 +192,7 @@ def main(argv):
 
     updater.start_polling()
     updater.idle()
+
 
 if __name__ == '__main__':
     main(sys.argv[1:])

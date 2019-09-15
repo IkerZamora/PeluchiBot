@@ -9,8 +9,9 @@ import requests_cache
 
 locale.setlocale(locale.LC_ALL, 'es_ES.UTF-8')
 
+
 class Event:
-    
+
     def __init__(self, acronym, date, first_edition_year, name, url):
         self.logger = logging.getLogger(__name__)
         self.acronym = acronym
@@ -45,15 +46,15 @@ class Event:
             )
         if response.history:
             url_edition = int(response.url.split('.')[0]
-                .replace('https://', '').replace(self.acronym.lower(), '')
-            )
+                              .replace('https://', '').replace(self.acronym.lower(), '')
+                              )
             if url_edition == self.edition + 1:
                 soup = BeautifulSoup(response.text, 'html.parser')
                 try:
                     # str e.g: Del 26 al 29 de julio de 2018
                     str_date = (soup.find('a', {'name': 'cuando'})
-                        .parent.findNext('p').text.lower().split()
-                    )
+                                .parent.findNext('p').text.lower().split()
+                                )
                     # pre-event day is the previous day to the official start.
                     start_day = int(str_date[1]) - 1
                     end_day = int(str_date[3])
@@ -80,8 +81,9 @@ class Event:
                 )
         else:
             self.logger.error('URL redirection of %s event did not happen.'
-                % self.name)
+                              % self.name)
         return self
+
 
 class Events:
 
@@ -94,12 +96,13 @@ class Events:
             backend='memory',
             expire_after=Events.CACHE_EXPIRE
         )
-        self.logger.info('Initialized in-memory cache for event date updater ' 
-            + 'with expiration set for %d minutes.' % (Events.CACHE_EXPIRE / 60)
+        self.logger.info(
+            'Initialized in-memory cache for event date updater ' +
+            'with expiration set for %d minutes.' % (Events.CACHE_EXPIRE / 60)
         )
         self.events = self._load_events()
 
-    def _load_events(self, filename = 'events.json'):
+    def _load_events(self, filename='events.json'):
         file = open(filename)
         data = json.load(file)
         file.close()
@@ -114,7 +117,7 @@ class Events:
             day = current['date']['day']
             hour = current['date']['hour']
             minute = current['date']['minute']
-            date = datetime(year,month,day,hour,minute)
+            date = datetime(year, month, day, hour, minute)
             current_event = Event(
                 current['acronym'],
                 date,
@@ -122,7 +125,7 @@ class Events:
                 current['name'],
                 url
             )
-            #if date < now:
+            # if date < now:
             #    current_event = current_event.update_event()
             events.append(current_event)
         return events
@@ -141,7 +144,8 @@ class Events:
     def next_event(self):
         now = datetime.now()
         # Since events occur annually max. time-lapse is 1 year.
-        soonest_date = now + timedelta(days=366) # Using Leap year just in case.
+        # Using Leap year just in case.
+        soonest_date = now + timedelta(days=366)
         next_event = None
         for event in self.events:
             if event.date > now and event.date < soonest_date:
